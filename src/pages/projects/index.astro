@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Projects" description="Selected AI/ML projects by Reza Miry: agentic workflows, RAG, LLM evaluation, KYC biometrics and pricing.">
+  <div class="container page-head">
+    <h1>Projects</h1>
+    <p class="lead">Selected work in generative AI, agents, MLOps and applied ML.</p>
+    <div class="grid" style="margin-top:32px;margin-bottom:56px">
+      {projects.map((p) => <ProjectCard project={p} />)}
+    </div>
+  </div>
+</Base>

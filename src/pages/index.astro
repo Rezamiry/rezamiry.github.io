@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import avatar from '../assets/avatar.png';
+import { site, about, stats, experience, skills, education, certifications } from '../data/profile';
+
+const featured = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeZone: 'UTC' });
+---
+<Base>
+  <div class="container">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">{site.title} · {site.location}</p>
+        <h1>Hi, I’m {site.name}.</h1>
+        <p class="lead">{site.tagline}</p>
+        <div class="cta">
+          <a class="btn primary" href="#contact">Get in touch</a>
+          <a class="btn" href="/projects/">See my work</a>
+          <a class="btn" href={site.linkedin} rel="me noopener">LinkedIn</a>
+          <a class="btn" href={site.github} rel="me noopener">GitHub</a>
+        </div>
+      </div>
+      <Image class="avatar" src={avatar} alt="Portrait of Reza Miry" width={480} height={480} loading="eager" />
+    </div>
+    <ul class="stats" aria-label="Highlights" style="list-style:none;padding:0">
+      {stats.map((s) => <li class="stat"><b>{s.value}</b><span>{s.label}</span></li>)}
+    </ul>
+  </div>
+
+  <section id="about">
+    <div class="container prose">
+      <h2>About</h2>
+      {about.map((p) => <p>{p}</p>)}
+      <p>Right now: <a href="/now/">see what I’m working on →</a></p>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="container">
+      <h2>Experience</h2>
+      {experience.map((j) => (
+        <article class="job">
+          <h3>{j.role} · {j.company}</h3>
+          <p class="meta">{j.period} · {j.location}</p>
+          <ul>{j.bullets.map((b) => <li>{b}</li>)}</ul>
+          {j.tech && <ul class="chips" aria-label="Technologies">{j.tech.map((t) => <li class="chip">{t}</li>)}</ul>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="container">
+      <h2>Featured projects</h2>
+      <div class="grid">{featured.map((p) => <ProjectCard project={p} />)}</div>
+      <p><a href="/projects/">All projects →</a></p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <h2>Skills</h2>
+      <div class="skills">
+        {skills.map((g) => (
+          <div>
+            <h3>{g.group}</h3>
+            <ul class="chips">{g.items.map((i) => <li class="chip">{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container two">
+      <div>
+        <h2>Education</h2>
+        <ul class="list">
+          {education.map((e) => (
+            <li><strong>{e.degree}</strong><span>{e.school} · {e.period}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2>Certifications</h2>
+        <ul class="list">
+          {certifications.map((c) => (
+            <li><strong>{c.name}</strong><span>{c.issuer} · {c.date}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section id="writing">
+      <div class="container">
+        <h2>Writing</h2>
+        <ul class="post-list">
+          {posts.map((p) => (
+            <li>
+              <a class="card" href={`/blog/${p.id}/`}>
+                <div class="org">{fmt.format(p.data.date)}</div>
+                <h3>{p.data.title}</h3>
+                <p>{p.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p><a href="/blog/">All posts →</a></p>
+      </div>
+    </section>
+  )}
+
+  <section id="contact">
+    <div class="container prose">
+      <h2>Contact</h2>
+      <p>I’m always happy to talk about AI engineering, agentic automation and ML in production.</p>
+      <div class="cta">
+        <a class="btn primary" href={`mailto:${site.email}`}>{site.email}</a>
+        <a class="btn" href={site.linkedin} rel="me noopener">LinkedIn</a>
+        <a class="btn" href={site.github} rel="me noopener">GitHub</a>
+      </div>
+    </div>
+  </section>
+</Base>

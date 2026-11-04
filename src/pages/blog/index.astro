@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'long', timeZone: 'UTC' });
+---
+<Base title="Blog" description="Writing on agentic AI, RAG, LLMOps and ML in production.">
+  <div class="container page-head" style="padding-bottom:56px">
+    <h1>Blog</h1>
+    <p class="lead">Notes on agentic AI, RAG, LLMOps and ML in production.</p>
+    <ul class="post-list" style="margin-top:32px">
+      {posts.map((p) => (
+        <li>
+          <a class="card" href={`/blog/${p.id}/`}>
+            <div class="org">{fmt.format(p.data.date)}</div>
+            <h3>{p.data.title}</h3>
+            <p>{p.data.description}</p>
+            {p.data.tags.length > 0 && <ul class="chips">{p.data.tags.map((t) => <li class="chip">{t}</li>)}</ul>}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p style="margin-top:24px"><a href="/rss.xml">Subscribe via RSS</a></p>
+  </div>
+</Base>

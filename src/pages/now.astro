@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import { certifications } from '../data/profile';
+const updated = 'November 2026';
+const recent = certifications.slice(0, 2);
+---
+<Base title="Now" description="What Reza Miry is working on and learning right now.">
+  <div class="container prose page-head">
+    <p class="eyebrow">/now</p>
+    <h1>What I’m doing now</h1>
+    <p class="muted">Last updated {updated}. Inspired by the <a href="https://nownownow.com/about">/now page movement</a>.</p>
+
+    <h2>Working on</h2>
+    <p>
+      I recently joined <strong>Chubb</strong> as a Senior AI Engineer in Toronto. I’m building
+      <strong>Portfolio+ Studio</strong>: a portfolio optimization agent with demand-driven dynamic pricing.
+    </p>
+
+    <h2>Focusing on</h2>
+    <ul>
+      <li>Production-ready agentic AI: architectures that are reliable, observable and measurable.</li>
+      <li>LLMOps and evaluation: making agent quality testable in CI.</li>
+      <li>Bridging research and real business applications.</li>
+    </ul>
+
+    <h2>Recently learned</h2>
+    <ul>
+      {recent.map((c) => <li>{c.name} ({c.issuer}, {c.date})</li>)}
+    </ul>
+
+    <h2>Let’s talk</h2>
+    <p>If any of this overlaps with what you’re building, <a href="/#contact">get in touch</a>.</p>
+  </div>
+</Base>
