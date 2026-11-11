@@ -4,15 +4,17 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import avatar from '../assets/avatar.png';
-import { site, about, stats, experience, skills, education, certifications } from '../data/profile';
+import { site, about, stats, experience } from '../data/profile';
 
 const featured = (await getCollection('projects'))
   .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order);
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
 const posts = (await getCollection('blog'))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 3);
+  .slice(0, 2);
+const current = experience[0];
 const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeZone: 'UTC' });
 ---
 <Base>
@@ -23,7 +25,7 @@ const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeZone: 'U
         <h1>Hi, I’m {site.name}.</h1>
         <p class="lead">{site.tagline}</p>
         <div class="cta">
-          <a class="btn primary" href="#contact">Get in touch</a>
+          <a class="btn primary" href="/contact/">Get in touch</a>
           <a class="btn" href="/projects/">See my work</a>
           <a class="btn" href={site.linkedin} rel="me noopener">LinkedIn</a>
           <a class="btn" href={site.github} rel="me noopener">GitHub</a>
@@ -40,25 +42,22 @@ const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeZone: 'U
     <div class="container prose">
       <h2>About</h2>
       {about.map((p) => <p>{p}</p>)}
-      <p>Right now: <a href="/now/">see what I’m working on →</a></p>
     </div>
   </section>
 
-  <section id="experience">
+  <section>
     <div class="container">
-      <h2>Experience</h2>
-      {experience.map((j) => (
-        <article class="job">
-          <h3>{j.role} · {j.company}</h3>
-          <p class="meta">{j.period} · {j.location}</p>
-          <ul>{j.bullets.map((b) => <li>{b}</li>)}</ul>
-          {j.tech && <ul class="chips" aria-label="Technologies">{j.tech.map((t) => <li class="chip">{t}</li>)}</ul>}
-        </article>
-      ))}
+      <h2>Currently</h2>
+      <a class="card" href="/now/">
+        <div class="org">{current.company} · {current.period}</div>
+        <h3>{current.role}</h3>
+        <p>{current.bullets[0]}</p>
+      </a>
+      <p><a href="/experience/">Full experience, skills and education →</a></p>
     </div>
   </section>
 
-  <section id="projects">
+  <section>
     <div class="container">
       <h2>Featured projects</h2>
       <div class="grid">{featured.map((p) => <ProjectCard project={p} />)}</div>
@@ -66,45 +65,10 @@ const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeZone: 'U
     </div>
   </section>
 
-  <section id="skills">
-    <div class="container">
-      <h2>Skills</h2>
-      <div class="skills">
-        {skills.map((g) => (
-          <div>
-            <h3>{g.group}</h3>
-            <ul class="chips">{g.items.map((i) => <li class="chip">{i}</li>)}</ul>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section id="education">
-    <div class="container two">
-      <div>
-        <h2>Education</h2>
-        <ul class="list">
-          {education.map((e) => (
-            <li><strong>{e.degree}</strong><span>{e.school} · {e.period}</span></li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h2>Certifications</h2>
-        <ul class="list">
-          {certifications.map((c) => (
-            <li><strong>{c.name}</strong><span>{c.issuer} · {c.date}</span></li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  </section>
-
   {posts.length > 0 && (
-    <section id="writing">
+    <section>
       <div class="container">
-        <h2>Writing</h2>
+        <h2>Latest writing</h2>
         <ul class="post-list">
           {posts.map((p) => (
             <li>
@@ -120,16 +84,4 @@ const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeZone: 'U
       </div>
     </section>
   )}
-
-  <section id="contact">
-    <div class="container prose">
-      <h2>Contact</h2>
-      <p>I’m always happy to talk about AI engineering, agentic automation and ML in production.</p>
-      <div class="cta">
-        <a class="btn primary" href={`mailto:${site.email}`}>{site.email}</a>
-        <a class="btn" href={site.linkedin} rel="me noopener">LinkedIn</a>
-        <a class="btn" href={site.github} rel="me noopener">GitHub</a>
-      </div>
-    </div>
-  </section>
 </Base>

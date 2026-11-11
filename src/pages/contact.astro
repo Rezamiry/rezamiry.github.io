@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/profile';
+---
+<Base title="Contact" description="Get in touch with Reza Miry about AI engineering, agentic automation and ML in production.">
+  <div class="container prose page-head" style="padding-bottom:56px">
+    <h1>Contact</h1>
+    <p class="lead">I’m always happy to talk about AI engineering, agentic automation and ML in production.</p>
+    <p>Email is the best way to reach me. I’m based in {site.location}.</p>
+    <div class="cta">
+      <a class="btn primary" href={`mailto:${site.email}`}>{site.email}</a>
+      <a class="btn" href={site.linkedin} rel="me noopener">LinkedIn</a>
+      <a class="btn" href={site.github} rel="me noopener">GitHub</a>
+    </div>
+  </div>
+</Base>

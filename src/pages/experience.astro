@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import { experience, skills, education, certifications } from '../data/profile';
+---
+<Base title="Experience" description="Reza Miry's experience as an AI/ML engineer: roles, skills, education and certifications.">
+  <div class="container page-head">
+    <h1>Experience</h1>
+    <p class="lead">7+ years taking machine learning from research to production.</p>
+  </div>
+
+  <section id="work">
+    <div class="container">
+      <h2>Work</h2>
+      {experience.map((j) => (
+        <article class="job">
+          <h3>{j.role} · {j.company}</h3>
+          <p class="meta">{j.period} · {j.location}</p>
+          <ul>{j.bullets.map((b) => <li>{b}</li>)}</ul>
+          {j.tech && <ul class="chips" aria-label="Technologies">{j.tech.map((t) => <li class="chip">{t}</li>)}</ul>}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="container">
+      <h2>Skills</h2>
+      <div class="skills">
+        {skills.map((g) => (
+          <div>
+            <h3>{g.group}</h3>
+            <ul class="chips">{g.items.map((i) => <li class="chip">{i}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="container two">
+      <div>
+        <h2>Education</h2>
+        <ul class="list">
+          {education.map((e) => (
+            <li><strong>{e.degree}</strong><span>{e.school} · {e.period}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2>Certifications</h2>
+        <ul class="list">
+          {certifications.map((c) => (
+            <li><strong>{c.name}</strong><span>{c.issuer} · {c.date}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>

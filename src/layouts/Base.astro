@@ -14,11 +14,11 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = new URL('/og-image.jpg', site.url).href;
 const path = Astro.url.pathname;
 const nav = [
-  { href: '/#experience', label: 'Experience' },
+  { href: '/experience/', label: 'Experience' },
   { href: '/projects/', label: 'Projects' },
   { href: '/blog/', label: 'Blog' },
   { href: '/now/', label: 'Now' },
-  { href: '/#contact', label: 'Contact' },
+  { href: '/contact/', label: 'Contact' },
 ];
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -71,7 +71,7 @@ const jsonLd = {
         <a class="brand" href="/">{site.name}</a>
         <ul>
           {nav.map((n) => (
-            <li><a class="link" href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a></li>
+            <li><a class="link" href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>
           ))}
           <li>
             <button class="theme-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">◐</button>
