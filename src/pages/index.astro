@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import avatar from '../assets/avatar.png';
+import { site, about, stats, experience } from '../data/profile';
+
+const featured = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2);
+const current = experience[0];
+const fmt = new Intl.DateTimeFormat('en-CA', { dateStyle: 'medium', timeZone: 'UTC' });
+---
+<Base>
+  <div class="container">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">{site.title} · {site.location}</p>
+        <h1>Hi, I’m {site.name}.</h1>
+        <p class="lead">{site.tagline}</p>
+        <div class="cta">
+          <a class="btn primary" href="/contact/">Get in touch</a>
+          <a class="btn" href="/projects/">See my work</a>
+          <a class="btn" href={site.linkedin} rel="me noopener">LinkedIn</a>
+          <a class="btn" href={site.github} rel="me noopener">GitHub</a>
+        </div>
+      </div>
+      <Image class="avatar" src={avatar} alt="Portrait of Reza Miry" width={480} height={480} loading="eager" />
+    </div>
+    <ul class="stats" aria-label="Highlights" style="list-style:none;padding:0">
+      {stats.map((s) => <li class="stat"><b>{s.value}</b><span>{s.label}</span></li>)}
+    </ul>
+  </div>
+
+  <section id="about">
+    <div class="container prose">
+      <h2>About</h2>
+      {about.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Currently</h2>
+      <a class="card" href="/now/">
+        <div class="org">{current.company} · {current.period}</div>
+        <h3>{current.role}</h3>
+        <p>{current.bullets[0]}</p>
+      </a>
+      <p><a href="/experience/">Full experience, skills and education →</a></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Featured projects</h2>
+      <div class="grid">{featured.map((p) => <ProjectCard project={p} />)}</div>
+      <p><a href="/projects/">All projects →</a></p>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section>
+      <div class="container">
+        <h2>Latest writing</h2>
+        <ul class="post-list">
+          {posts.map((p) => (
+            <li>
+              <a class="card" href={`/blog/${p.id}/`}>
+                <div class="org">{fmt.format(p.data.date)}</div>
+                <h3>{p.data.title}</h3>
+                <p>{p.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p><a href="/blog/">All posts →</a></p>
+      </div>
+    </section>
+  )}
+</Base>

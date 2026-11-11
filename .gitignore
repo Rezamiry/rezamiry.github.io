@@ -1,0 +1,28 @@
+# build output / generated
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# env
+.env
+.env.production
+
+# OS / editor
+.DS_Store
+.idea/
+*:Zone.Identifier
+
+# Personal documents: keep local only, never publish
+*.pdf
+reza_miry_resume*
+Profile.pdf
+1778256083286.png
+
+# Local tooling (Spec Kit / Claude Code)
+.specify/
+.claude/
