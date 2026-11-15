@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import BookCard from '../components/BookCard.astro';
+import { currentlyReading, readBooks, wishlistBooks } from '../data/reading';
+---
+
+<Base
+  title="Reading"
+  description="Books Reza Miry is currently reading, has read, and plans to read next across AI, engineering, systems, and ideas."
+>
+  <div class="container page-head">
+    <p class="eyebrow">/reading</p>
+    <h1>Reading</h1>
+    <p class="lead">
+      Books I’m currently reading, works I’ve finished and recommend, and my queue for what’s next.
+    </p>
+
+    <div class="reading-quick-nav" aria-label="Reading section jump links">
+      <a class="nav-pill" href="#currently-reading">
+        <span class="status-dot dot-reading" aria-hidden="true"></span>
+        Currently Reading ({currentlyReading.length})
+      </a>
+      <a class="nav-pill" href="#read">
+        <span class="status-dot dot-read" aria-hidden="true"></span>
+        Read ({readBooks.length})
+      </a>
+      <a class="nav-pill" href="#wishlist">
+        <span class="status-dot dot-wishlist" aria-hidden="true"></span>
+        Next / Wishlist ({wishlistBooks.length})
+      </a>
+    </div>
+  </div>
+
+  <section id="currently-reading">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2>Currently reading</h2>
+        <span class="section-count">{currentlyReading.length} books</span>
+      </div>
+      <p class="section-desc">Actively reading right now.</p>
+      <div class="book-grid">
+        {currentlyReading.map((book) => <BookCard book={book} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="read">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2>Read</h2>
+        <span class="section-count">{readBooks.length} books</span>
+      </div>
+      <p class="section-desc">Completed books, ratings, and key takeaways.</p>
+      <div class="book-grid">
+        {readBooks.map((book) => <BookCard book={book} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="wishlist">
+    <div class="container">
+      <div class="section-title-wrap">
+        <h2>Next / Wishlist</h2>
+        <span class="section-count">{wishlistBooks.length} books</span>
+      </div>
+      <p class="section-desc">Queued up to read next or on my wishlist.</p>
+      <div class="book-grid">
+        {wishlistBooks.map((book) => <BookCard book={book} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="reading-contact">
+    <div class="container prose">
+      <h2>Have a book recommendation?</h2>
+      <p>
+        I’m always looking for great books on AI/ML architectures, system engineering, decision-making, or captivating history and fiction. If you’ve read something unforgettable, <a href="/contact/">let me know</a>!
+      </p>
+    </div>
+  </section>
+</Base>

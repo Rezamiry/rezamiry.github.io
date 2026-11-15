@@ -16,6 +16,7 @@ npm-debug.log*
 .DS_Store
 .idea/
 *:Zone.Identifier
+__pycache__/
 
 # Personal documents: keep local only, never publish
 *.pdf

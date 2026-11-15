@@ -1,0 +1,50 @@
+---
+import type { Book } from '../data/reading';
+
+interface Props {
+  book: Book;
+}
+
+const { book } = Astro.props;
+const stars = book.rating ? '★'.repeat(book.rating) + '☆'.repeat(5 - book.rating) : null;
+---
+
+<article class="card book-card" id={`book-${book.id}`}>
+  {book.cover && (
+    <div class="book-cover-wrap">
+      <img
+        class="book-cover"
+        src={book.cover}
+        alt={`Cover of ${book.title}`}
+        loading="lazy"
+        width="100"
+        height="150"
+      />
+    </div>
+  )}
+  <div class="book-body">
+    <div class="book-meta">
+      {book.genre && <span class="chip">{book.genre}</span>}
+      {book.yearRead && <span class="book-year">Finished {book.yearRead}</span>}
+      {stars && (
+        <span class="book-stars" aria-label={`Rating: ${book.rating} out of 5 stars`}>
+          {stars}
+        </span>
+      )}
+    </div>
+
+    <h3 class="book-title">
+      {book.url ? (
+        <a href={book.url} target="_blank" rel="noopener noreferrer" class="book-link">
+          {book.title} <span class="ext-icon" aria-hidden="true">↗</span>
+        </a>
+      ) : (
+        book.title
+      )}
+    </h3>
+
+    <p class="book-author">by {book.author}</p>
+
+    {book.notes && <p class="book-notes">{book.notes}</p>}
+  </div>
+</article>
