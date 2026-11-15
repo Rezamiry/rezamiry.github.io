@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import { certifications } from '../data/profile';
+import { currentlyReading } from '../data/reading';
 const updated = 'November 2026';
 const recent = certifications.slice(0, 2);
 ---
@@ -22,6 +23,17 @@ const recent = certifications.slice(0, 2);
       <li>LLMOps and evaluation: making agent quality testable in CI.</li>
       <li>Bridging research and real business applications.</li>
     </ul>
+
+    <h2>Currently reading</h2>
+    <ul>
+      {currentlyReading.map((b) => (
+        <li>
+          <strong>{b.title}</strong> by {b.author}
+          {b.notes && <span class="muted"> — {b.notes}</span>}
+        </li>
+      ))}
+    </ul>
+    <p><a href="/reading/">See full reading list, past reads, and wishlist →</a></p>
 
     <h2>Recently learned</h2>
     <ul>
